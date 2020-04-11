@@ -1,22 +1,18 @@
 # Desenvolvimento
 FROM node:12.16.1-alpine3.9 AS development
 
-ARG USERNAME=codese
-
-RUN addgroup -S "${USERNAME}Group" && adduser -S "$USERNAME" -G "${USERNAME}Group"
-
 WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:$PATH
 
 COPY package*.json ./
 
-USER $USERNAME
-
 RUN npm install --silent
 RUN npm install react-scripts@3.3.1 -g --silent
 
 COPY . .
+
+USER $USERNAME
 
 
 # Build do projeto

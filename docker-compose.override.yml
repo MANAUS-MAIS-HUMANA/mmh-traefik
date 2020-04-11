@@ -21,8 +21,6 @@ services:
   front:
     build:
       target: development
-      args:
-        - USERNAME=${USERNAME}
     command: npm run start
     labels:
       - traefik.port=3000

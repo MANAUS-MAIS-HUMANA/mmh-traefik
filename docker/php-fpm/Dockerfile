@@ -3,7 +3,7 @@ FROM php:7.4.4-fpm-alpine3.11 AS development
 
 ARG USERNAME=codese
 
-RUN addgroup -S "${USERNAME}Group" && adduser -S "$USERNAME" -G "${USERNAME}Group"
+RUN adduser -D "$USERNAME"
 
 WORKDIR /var/www
 
