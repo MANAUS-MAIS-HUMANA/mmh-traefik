@@ -15,6 +15,7 @@ Estrutura em containers usando o [Traefik v1.7](https://docs.traefik.io/v1.7), t
 - E para sistemas Linux, além do Docker, também é necessário o [Docker Compose](https://docs.docker.com/compose/install/).
 
 > Nos  teste em `desenvolvimento`, foram usados o Framework PHP [Laravel 7.x](https://laravel.com/) e o Framework Javascript [VueJS](https://vuejs.org/).
+
 > _**Obs.:** Não feram feitos teste em ambiente de `produção`._
 
 ### Para utilizar essa estrutura, alguns passos devem serem feitos:
