@@ -11,15 +11,16 @@ echo "Running docker-compose $1..."
 
 if [[ ! -d ./front ]]; then
     git clone https://github.com/MANAUS-MAIS-HUMANA/mmh-web.git front
+
+    echo "Running npm install in front"
+    cd front && npm install --silent && cd ..
 fi
 
 if [[ ! -d ./back ]]; then
     git clone https://github.com/MANAUS-MAIS-HUMANA/mmh-service.git back
 fi
 
-FILE=./front/Dockerfile
-
-if [[ ! -f "$FILE" ]]; then
+if [[ ! -f ./front/Dockerfile ]]; then
     yes | cp ./docker/node/Dockerfile ./front/
 fi
 
@@ -30,7 +31,7 @@ case "$2" in
 
         rm -f acme.json
 
-        sudo docker-compose $1 --remove-orphans
+        sudo docker-compose $1 --build --remove-orphans
     ;;
     prod)
         yes | cp .env-prod .env
