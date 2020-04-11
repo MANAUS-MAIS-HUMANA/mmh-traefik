@@ -1,0 +1,51 @@
+version: "3.4"
+
+services:
+  #  proxy reverso
+  treafik:
+    command: --api --docker --docker.domain=${DOMAIN} --docker.watch=true --docker.exposedbydefault=false
+
+  # servidor web para o back
+  nginx:
+    build:
+      target: development
+
+  # backend
+  back:
+    build:
+      target: development
+      args:
+        - USERNAME=${USERNAME}
+
+  # frontend
+  front:
+    build:
+      target: development
+    command: npm run start
+    labels:
+      - traefik.port=3000
+      - traefik.frontend.rule=Host:front.${DOMAIN}
+    volumes:
+      - ./front:/app
+      - /app/node_modules
+
+  # SGBD
+  phpmyadmin:
+    container_name: ${APP_NAME}_phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - mysql
+    labels:
+      - traefik.enable=true
+      - traefik.port=80
+      - traefik.tcp.rule=Host:phpmyadmin.${DOMAIN}
+      - traefik.backend=phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+    volumes:
+      - sessions
+
+volumes:
+  sessions:

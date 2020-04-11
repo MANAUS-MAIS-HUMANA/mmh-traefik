@@ -1,0 +1,76 @@
+version: "3.4"
+
+services:
+  #  proxy reverso
+  treafik:
+    container_name: ${APP_NAME}_traefik
+    image: traefik:${TRAEFIK_VERSION}
+    ports:
+      - 80:80
+    labels:
+      - traefik.enable=true
+      - traefik.port=8080
+      - traefik.frontend.rule=Host:traefik.${DOMAIN}
+      - traefik.backend=traefik
+      - traefik.frontend.auth.basic=${TRAEFIK_AUTH}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  # servidor web para o back
+  nginx:
+    container_name: ${APP_NAME}_nginx
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+      args:
+        - UPSTREAM_CONTAINER=back
+        - UPSTREAM_PORT=9000
+    depends_on:
+      - mysql
+      - back
+    labels:
+      - traefik.enable=true
+      - traefik.port=80
+      - traefik.frontend.rule=Host:back.${DOMAIN}
+      - traefik.backend=back
+    volumes:
+      - ./back:/var/www
+
+  # backend
+  back:
+    container_name: ${APP_NAME}_back
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    volumes:
+      - ./back:/var/www
+
+  # frontend
+  front:
+    container_name: ${APP_NAME}_frontend
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    depends_on:
+      - treafik
+      - back
+    labels:
+      - traefik.enable=true
+      - traefik.backend=front
+    tty: true
+
+  # banco de dados
+  mysql:
+    container_name: ${APP_NAME}_mysql
+    image: mysql:${MYSQL_VERSION}
+    command: --innodb-use-native-aio=0
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql:/var/lib/mysql
+
+volumes:
+  mysql:

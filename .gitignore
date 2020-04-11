@@ -1,0 +1,6 @@
+.idea
+.vscode
+.env*
+!.env-example
+acme.json
+docker/nginx/back/default.conf
