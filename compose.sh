@@ -12,16 +12,17 @@ echo "Running docker-compose $1..."
 if [[ ! -d ./front ]]; then
     git clone https://github.com/MANAUS-MAIS-HUMANA/mmh-web.git front
 
+    yes | cp ./docker/node/Dockerfile ./front/
+
     echo "Running npm install in front"
     cd front && npm install --silent && cd ..
 fi
 
 if [[ ! -d ./back ]]; then
     git clone https://github.com/MANAUS-MAIS-HUMANA/mmh-service.git back
-fi
 
-if [[ ! -f ./front/Dockerfile ]]; then
-    yes | cp ./docker/node/Dockerfile ./front/
+    echo "Running permissions in back"
+    cd back && sudo chmod -R 755 storage && sudo chmod -R 755 bootstrap/cache/ && cd ..
 fi
 
 case "$2" in
@@ -31,7 +32,7 @@ case "$2" in
 
         rm -f acme.json
 
-        sudo docker-compose $1 --build --remove-orphans
+        sudo docker-compose $1 --remove-orphans
     ;;
     prod)
         yes | cp .env-prod .env

@@ -38,7 +38,7 @@ services:
 
   # backend
   back:
-    container_name: ${APP_NAME}_back
+    container_name: ${APP_NAME}_backend
     build:
       context: ./docker/php-fpm
       dockerfile: Dockerfile
