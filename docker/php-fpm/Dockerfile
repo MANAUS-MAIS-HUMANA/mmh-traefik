@@ -3,7 +3,7 @@ FROM php:7.4.4-fpm-alpine3.11 AS development
 
 ARG USERNAME=codese
 
-RUN adduser -D ${USERNAME}
+RUN addgroup -S "${USERNAME}Group" && adduser -S "$USERNAME" -G "${USERNAME}Group"
 
 WORKDIR /var/www
 
@@ -17,6 +17,8 @@ COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 9000
+
+USER $USERNAME
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
