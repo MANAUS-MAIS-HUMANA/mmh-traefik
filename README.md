@@ -14,8 +14,8 @@ Estrutura em containers usando o [Traefik v1.7](https://docs.traefik.io/v1.7), t
 - Para seguir os passados de utilização, você deve ter instalado em seu computador o [Docker](https://docs.docker.com/engine/install/).
 - E para sistemas Linux, além do Docker, também é necessário o [Docker Compose](https://docs.docker.com/compose/install/).
 
-      	> Nos  teste em `desenvolvimento`, foram usados o Framework PHP [Laravel 7.x](https://laravel.com/) e o Framework Javascript [VueJS](https://vuejs.org/).
-      	> _**Obs.:** Não feram feitos teste em ambiente de `produção`._
+> Nos  teste em `desenvolvimento`, foram usados o Framework PHP [Laravel 7.x](https://laravel.com/) e o Framework Javascript [VueJS](https://vuejs.org/).
+> _**Obs.:** Não feram feitos teste em ambiente de `produção`._
 
 ### Para utilizar essa estrutura, alguns passos devem serem feitos:
 
@@ -35,16 +35,16 @@ Estrutura em containers usando o [Traefik v1.7](https://docs.traefik.io/v1.7), t
 
 3.  Na pasta raiz, existe um arquivo chamado `compose.sh`, ele executa algumas validações e ações para que os containers possam subir, seguem comandos
 
-    ```bash
-    	# modo: desenvolvimento em modo detach (em segundo plano)
-    	./compose.sh "up -d" dev
+	```bash
+	# modo: desenvolvimento em modo detach (em segundo plano)
+	./compose.sh "up -d" dev
 
-    	# modo: desenvolvimento visualizando os containers
-    	./compose.sh up dev
+	# modo: desenvolvimento visualizando os containers
+	./compose.sh up dev
 
-    	# modo: produção (é recomendado em modo detach)
-    	./compose.sh "up -d" prod
-    ```
+	# modo: produção (é recomendado em modo detach)
+	./compose.sh "up -d" prod
+	```
 
 Seguido todos os passos acima descritos, você já deve ter acesso ao **dashboard** do traefik através da url `traefik.localhost`, informe usuário e senha conforme explicado no _passo 2_, e logo você verá uma coluna chamada **FRONTENDS**, lá estarão listadas as url's para acesso a cada um dos containers disponíveis.
 
@@ -66,7 +66,7 @@ Seguido todos os passos acima descritos, você já deve ter acesso ao **dashboar
     |
     |________php-fpm
     |        |   Dockerfile
-		|				 |	 entrypoint.sh
+    |        | 	 entrypoint.sh
     |
     |   .env-example
     |   .gitignore
