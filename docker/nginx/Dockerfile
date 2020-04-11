@@ -13,6 +13,7 @@ COPY ./back/default.conf /etc/nginx/conf.d
 
 EXPOSE 80
 
+
 # Produção
 FROM nginx:1.17-alpine AS production
 

@@ -12,10 +12,12 @@ RUN npm install react-scripts@3.3.1 -g --silent
 
 COPY . .
 
+
 # Build do projeto
 FROM development AS build
 
 RUN npm run build
+
 
 # Produção
 FROM nginx:1.17-alpine AS production

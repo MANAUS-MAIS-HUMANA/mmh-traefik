@@ -1,3 +1,4 @@
+# Desenvolvimento
 FROM php:7.4.4-fpm-alpine3.11 AS development
 
 ARG USERNAME=codese
@@ -11,10 +12,16 @@ RUN rm -rf /var/www/html \
     && docker-php-ext-install pdo pdo_mysql bcmath \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+COPY entrypoint.sh /usr/local/bin/
+
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 EXPOSE 9000
 
-CMD ["php-fpm"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
+
+# Produção
 FROM php:7.4.4-fpm-alpine:3.11 AS production
 
 WORKDIR /var/www
