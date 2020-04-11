@@ -3,4 +3,6 @@
 .env*
 !.env-example
 acme.json
+back
+front
 docker/nginx/back/default.conf
