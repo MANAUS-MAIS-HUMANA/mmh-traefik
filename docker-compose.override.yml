@@ -15,7 +15,7 @@ services:
     build:
       target: development
       args:
-        - USERNAME=${USERNAME}
+        - USERNAME=${USERNAMEDOCKER}
 
   # frontend
   front:
@@ -46,6 +46,7 @@ services:
       - PMA_PORT=3306
     volumes:
       - sessions
+    tty: true
 
 volumes:
   sessions:

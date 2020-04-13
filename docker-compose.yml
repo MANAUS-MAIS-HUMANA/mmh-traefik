@@ -15,6 +15,7 @@ services:
       - traefik.frontend.auth.basic=${TRAEFIK_AUTH}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    tty: true
 
   # servidor web para o back
   nginx:
@@ -35,15 +36,17 @@ services:
       - traefik.backend=back
     volumes:
       - ./back:/var/www
+    tty: true
 
   # backend
   back:
     container_name: ${APP_NAME}_backend
     build:
-      context: ./docker/php-fpm
+      context: ./back
       dockerfile: Dockerfile
     volumes:
       - ./back:/var/www
+    tty: true
 
   # frontend
   front:
@@ -71,6 +74,7 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - mysql:/var/lib/mysql
+    tty: true
 
 volumes:
   mysql:

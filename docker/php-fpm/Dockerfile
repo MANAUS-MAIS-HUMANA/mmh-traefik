@@ -5,8 +5,7 @@ WORKDIR /var/www
 
 ARG USERNAME=codese
 
-RUN addgroup -g 1000 "${USERNAME}Group" \
-    && adduser -u 1000 -G "${USERNAME}Group" -s /bin/sh -D $USERNAME
+RUN adduser -u 1000 -G root -s /bin/sh -D $USERNAME
 
 RUN rm -rf /var/www/html \
     && apk add --no-cache openssl bash nano mysql-client \
@@ -20,9 +19,14 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 COPY . .
 
-USER $USERNAME
+RUN chown -R $USERNAME:root /var/www \
+    && chmod u+rwx,g+rx,o+rx /var/www \
+    && find /var/www -type d -exec chmod u+rwx,g+rx,o+rx {} + \
+    && find /var/www -type f -exec chmod u+rw,g+rw,o+r {} +
 
 EXPOSE 9000
+
+USER $USERNAME
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
