@@ -67,8 +67,10 @@ services:
     container_name: ${APP_NAME}_mysql
     image: mysql:${MYSQL_VERSION}
     command: --innodb-use-native-aio=0
-    ports:
-      - 8886:3306
+    labels:
+      - traefik.enable=true
+      - traefik.port=3306
+      - traefik.backend=mysql
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
