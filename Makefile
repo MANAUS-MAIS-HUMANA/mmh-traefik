@@ -1,5 +1,8 @@
 .PHONY: start-dev
-start-dev: front back dev build-no-cache up-dev
+start-dev: front back dev up-dev
+
+.PHONY: start-dev--no-cache
+start-dev-cache: front back dev build-no-cache up-dev
 
 .PHONY: start-prod
 start-prod: front back prod build-no-cache up-prod
