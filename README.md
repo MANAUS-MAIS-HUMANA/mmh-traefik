@@ -14,8 +14,6 @@ Estrutura em containers usando o [Traefik v1.7](https://docs.traefik.io/v1.7), t
 - Para seguir os passados de utilização, você deve ter instalado em seu computador o [Docker](https://docs.docker.com/engine/install/).
 - E para sistemas Linux, além do Docker, também é necessário o [Docker Compose](https://docs.docker.com/compose/install/).
 
-> Nos  teste em `desenvolvimento`, foram usados o Framework PHP [Laravel 7.x](https://laravel.com/) e o Framework Javascript [VueJS](https://vuejs.org/).
-
 > _**Obs.:** Não feram feitos teste em ambiente de `produção`._
 
 ### Para utilizar essa estrutura, alguns passos devem serem feitos:
@@ -24,7 +22,7 @@ Estrutura em containers usando o [Traefik v1.7](https://docs.traefik.io/v1.7), t
     > Observe que existem parâmetros que são **obrigatórios** para cada tipo de `.env`.
 2.  Gerar a senha de autenticação ao **dashboard** do traefik, copie e cole no parâmetro `TRAEFIK_AUTH` do `.env-*`
 
-    > Observe que para gerar a senha, é necessário ter instalado o pacote [htpasswd](https://httpd.apache.org/docs/2.4/programs/htpasswd.html)
+    > Observe que para gerar a senha, é necessário ter instalado o pacote `apache2-utils`
 
     ```bash
     # comando
@@ -34,18 +32,22 @@ Estrutura em containers usando o [Traefik v1.7](https://docs.traefik.io/v1.7), t
     usuario:$apr1$ImIUZeZB$cP2ieEvGmSoNH4Cyt1zHH.
     ```
 
-3.  Na pasta raiz, existe um arquivo chamado `compose.sh`, ele executa algumas validações e ações para que os containers possam subir, seguem comandos
+3.  Na pasta raiz, existe um arquivo chamado `Makefile`, ele executa algumas validações e ações para que os containers possam subir, seguem comandos
 
-	```bash
-	# modo: desenvolvimento em modo detach (em segundo plano)
-	./compose.sh "up -d" dev
+    ```bash
+    # modo: desenvolvimento
+    # Primeiro build
+    make start-dev--no-cache
 
-	# modo: desenvolvimento visualizando os containers
-	./compose.sh up dev
+    # Demais builds
+    make start-dev
 
-	# modo: produção (é recomendado em modo detach)
-	./compose.sh "up -d" prod
-	```
+    # modo: produção
+    make start-prod
+
+    # Derrubar containers
+    make down
+    ```
 
 Seguido todos os passos acima descritos, você já deve ter acesso ao **dashboard** do traefik através da url `traefik.localhost`, informe usuário e senha conforme explicado no _passo 2_, e logo você verá uma coluna chamada **FRONTENDS**, lá estarão listadas as url's para acesso a cada um dos containers disponíveis.
 
@@ -54,12 +56,18 @@ Seguido todos os passos acima descritos, você já deve ter acesso ao **dashboar
 ```
     traefik
     |___docker
+    |    |___mysql
+    |    |   |  Dockerfile
+    |    |   |  my.cnf
+    |    |
     |    |___nginx
     |        |___back
     |        |    |   default-dev.conf
     |        |    |   default-prod.conf
+    |        |
     |        |___front
     |        |    |   default.conf
+    |        |
     |        |   Dockerfile
     |
     |________node
@@ -71,10 +79,10 @@ Seguido todos os passos acima descritos, você já deve ter acesso ao **dashboar
     |
     |   .env-example
     |   .gitignore
-    |   compose.sh
     |   docker-compose.override.yml
     |   docker-compose.prod.yml
     |   docker-compose.yml
+    |   Makefile
     |   README.md
     |
 ```
