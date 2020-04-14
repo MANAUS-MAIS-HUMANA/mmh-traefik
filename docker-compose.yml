@@ -65,8 +65,11 @@ services:
   # banco de dados
   mysql:
     container_name: ${APP_NAME}_mysql
-    image: mysql:${MYSQL_VERSION}
-    command: --innodb-use-native-aio=0
+    build:
+      context: ./docker/mysql
+      dockerfile: Dockerfile
+      args:
+        - MYSQL_VERSION=${MYSQL_VERSION}
     labels:
       - traefik.enable=true
       - traefik.port=3306
@@ -76,6 +79,7 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TIMEZONE=${TIMEZONE}
     volumes:
       - mysql:/var/lib/mysql
     tty: true
