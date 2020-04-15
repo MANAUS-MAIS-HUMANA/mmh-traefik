@@ -37,10 +37,10 @@ Estrutura em containers usando o [Traefik v1.7](https://docs.traefik.io/v1.7), t
     ```bash
     # modo: desenvolvimento
     # Primeiro build
-    make start-dev--no-cache
-
-    # Demais builds
     make start-dev
+
+    # Subir containers após primeiro build
+    make up-dev
 
     # modo: produção
     make start-prod
