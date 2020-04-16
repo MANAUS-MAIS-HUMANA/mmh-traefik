@@ -6,6 +6,7 @@ start-prod: front back prod network-external build-no-cache up-prod
 
 .PHONY: front
 front:
+	@echo "teste"
 	if [ ! -d "./front" ]; then \
 		git clone https://github.com/MANAUS-MAIS-HUMANA/mmh-web.git front; \
 		cp ./docker/node/Dockerfile ./front/; \
