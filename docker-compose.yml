@@ -1,5 +1,11 @@
 version: "3.4"
 
+networks:
+  mmh_external:
+    external: true
+  internal:
+    external: false
+
 services:
   #  proxy reverso
   treafik:
@@ -11,8 +17,9 @@ services:
       - traefik.enable=true
       - traefik.port=8080
       - traefik.frontend.rule=Host:traefik.${DOMAIN}
-      - traefik.backend=traefik
       - traefik.frontend.auth.basic=${TRAEFIK_AUTH}
+    networks:
+      - mmh_external
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     tty: true
@@ -33,7 +40,11 @@ services:
       - traefik.enable=true
       - traefik.port=80
       - traefik.frontend.rule=Host:back.${DOMAIN}
+      - traefik.docker.network=mmh_external
       - traefik.backend=back
+    networks:
+      - mmh_external
+      - internal
     volumes:
       - ./back:/var/www
     tty: true
@@ -44,6 +55,8 @@ services:
     build:
       context: ./back
       dockerfile: Dockerfile
+    networks:
+      - internal
     volumes:
       - ./back:/var/www
     tty: true
@@ -59,7 +72,11 @@ services:
       - back
     labels:
       - traefik.enable=true
+      - traefik.docker.network=mmh_external
       - traefik.backend=front
+    networks:
+      - mmh_external
+      - internal
     tty: true
 
   # banco de dados
@@ -73,7 +90,10 @@ services:
     labels:
       - traefik.enable=true
       - traefik.port=3306
+      - traefik.docker.network=internal
       - traefik.backend=mysql
+    networks:
+      - internal
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}

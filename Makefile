@@ -1,8 +1,8 @@
 .PHONY: start-dev
-start-dev: front back dev build-no-cache up-dev
+start-dev: front back dev network-external build-no-cache up-dev
 
 .PHONY: start-prod
-start-prod: front back prod build-no-cache up-prod
+start-prod: front back prod network-external build-no-cache up-prod
 
 .PHONY: front
 front:
@@ -40,6 +40,10 @@ build:
 .PHONY: build-no-cache
 build-no-cache:
 	@docker-compose build --no-cache
+
+.PHONY: network-external
+network-external:
+	docker network inspect mmh_external > /dev/null 2>&1 || docker network create --driver bridge mmh_external
 
 .PHONY: up-dev
 up-dev:

@@ -38,8 +38,12 @@ services:
     labels:
       - traefik.enable=true
       - traefik.port=80
+      - traefik.docker.network=mmh_external
       - traefik.tcp.rule=Host:phpmyadmin.${DOMAIN}
       - traefik.backend=phpmyadmin
+    networks:
+      - mmh_external
+      - internal
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=mysql
