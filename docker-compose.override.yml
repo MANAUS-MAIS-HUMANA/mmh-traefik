@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   #  proxy reverso
-  treafik:
+  traefik:
     command: --api --docker --docker.domain=${DOMAIN} --docker.watch=true --docker.exposedbydefault=false
 
   # servidor web para o back
