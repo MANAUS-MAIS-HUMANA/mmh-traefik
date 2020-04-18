@@ -8,7 +8,7 @@ networks:
 
 services:
   #  proxy reverso
-  treafik:
+  traefik:
     container_name: ${APP_NAME}_traefik
     image: traefik:${TRAEFIK_VERSION}
     ports:
@@ -34,7 +34,6 @@ services:
         - UPSTREAM_CONTAINER=back
         - UPSTREAM_PORT=9000
     depends_on:
-      - mysql
       - back
     labels:
       - traefik.enable=true
@@ -55,6 +54,9 @@ services:
     build:
       context: ./back
       dockerfile: Dockerfile
+    depends_on:
+      - traefik
+      - mysql
     networks:
       - internal
     volumes:
@@ -68,7 +70,7 @@ services:
       context: ./front
       dockerfile: Dockerfile
     depends_on:
-      - treafik
+      - traefik
       - back
     labels:
       - traefik.enable=true
