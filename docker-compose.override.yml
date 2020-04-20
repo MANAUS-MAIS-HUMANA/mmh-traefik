@@ -30,6 +30,8 @@ services:
       target: development
       args:
         - USERNAME=${USERNAMEDOCKER}
+    environment:
+      - FRONT_URL=front.${DOMAIN}
 
   # frontend
   front:
