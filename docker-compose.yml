@@ -58,6 +58,7 @@ services:
       - traefik
       - mysql
     networks:
+      - mmh_external
       - internal
     volumes:
       - ./back:/var/www
