@@ -15,8 +15,6 @@ front:
 back:
 	if [ ! -d "./back" ]; then \
 		git clone https://github.com/MANAUS-MAIS-HUMANA/mmh-service.git back; \
-		cp ./docker/php-fpm/Dockerfile ./back/; \
-		cp ./docker/php-fpm/entrypoint.sh ./back/; \
 		chmod -R 755 ./back/storage ./back/bootstrap/cache/; \
 	fi
 
