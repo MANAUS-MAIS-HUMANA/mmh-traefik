@@ -59,19 +59,15 @@ down:
 
 .PHONY: db-migrate
 db-migrate:
-	@docker-compose exec back ./artisan migrate
+	@docker-compose exec --user=${USERNAMEDOCKER} back ./artisan migrate
 
 .PHONY: db-migrate-make
 db-migrate-make:
-	@docker-compose exec back ./artisan make:migration ${ARGS}
-
-.PHONY: db-refresh
-db-refresh:
-	@docker-compose exec back ./artisan migrate:refresh
+	@docker-compose exec --user=${USERNAMEDOCKER} back ./artisan make:migration ${ARGS}
 
 .PHONY: db-rollback
 db-rollback:
-	@docker-compose exec back ./artisan migrate:rollback
+	@docker-compose exec --user=${USERNAMEDOCKER} back ./artisan migrate:rollback
 
 .PHONY: db-shell
 db-shell:
@@ -79,4 +75,4 @@ db-shell:
 
 .PHONY: shell
 shell:
-	@docker-compose exec back bash
+	@docker-compose exec --user=${USERNAMEDOCKER} back bash
