@@ -56,3 +56,23 @@ up-prod:
 .PHONY: down
 down:
 	@docker-compose down
+
+.PHONY: db-migrate
+db-migrate:
+	@docker-compose exec --user=${USERNAMEDOCKER} back ./artisan migrate
+
+.PHONY: db-migrate-make
+db-migrate-make:
+	@docker-compose exec --user=${USERNAMEDOCKER} back ./artisan make:migration ${ARGS}
+
+.PHONY: db-rollback
+db-rollback:
+	@docker-compose exec --user=${USERNAMEDOCKER} back ./artisan migrate:rollback
+
+.PHONY: db-shell
+db-shell:
+	@docker-compose exec mysql mysql -u ${USER} -p
+
+.PHONY: shell
+shell:
+	@docker-compose exec --user=${USERNAMEDOCKER} back bash
