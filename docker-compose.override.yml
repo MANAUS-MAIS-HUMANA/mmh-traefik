@@ -3,12 +3,26 @@ version: "3.4"
 services:
   #  proxy reverso
   traefik:
-    command: --api --docker --docker.domain=${DOMAIN} --docker.watch=true --docker.exposedbydefault=false
+    command:
+      - --api
+      - --docker
+      - --logLevel=ERROR
+      - --traefikLog.filePath=/logs/traefik.log
+      - --traefikLog.format=json
+      - --accessLog.filePath=/logs/access.log
+      - --accessLog.format=json
+      - --docker.domain=${DOMAIN}
+      - --docker.watch=true
+      - --docker.exposedbydefault=false
+    volumes:
+      - ./logs/traefik:/logs
 
   # servidor web para o back
   nginx:
     build:
       target: development
+    volumes:
+      - ./logs/nginx:/var/log/nginx
 
   # backend
   back:

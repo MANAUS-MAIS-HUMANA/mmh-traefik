@@ -52,7 +52,7 @@ services:
   back:
     container_name: ${APP_NAME}_backend
     build:
-      context: ./back
+      context: ./docker/php-fpm
       dockerfile: Dockerfile
     depends_on:
       - traefik
