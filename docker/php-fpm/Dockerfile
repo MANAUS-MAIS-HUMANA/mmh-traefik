@@ -14,10 +14,10 @@ RUN rm -rf /var/www/html \
 
 
 COPY entrypoint.sh /usr/local/bin/
+COPY php.ini /usr/local/etc/php/conf.d/php.override.ini
+COPY www.conf /usr/local/etc/php-fpm.d/www.conf
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
-
-COPY . .
 
 RUN chown -R $USERNAME:root /var/www \
     && chmod u+rwx,g+rx,o+rx /var/www \
