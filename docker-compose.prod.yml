@@ -35,6 +35,8 @@ services:
   back:
     build:
       target: production
+    environment:
+      - FRONT_URL=${DOMAIN}
 
   # frontend
   front:

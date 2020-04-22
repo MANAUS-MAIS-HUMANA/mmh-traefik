@@ -17,9 +17,11 @@ services:
       - traefik.enable=true
       - traefik.port=8080
       - traefik.frontend.rule=Host:traefik.${DOMAIN}
+      - traefik.docker.network=mmh_external
       - traefik.frontend.auth.basic=${TRAEFIK_AUTH}
     networks:
       - mmh_external
+      - internal
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     tty: true
@@ -52,15 +54,17 @@ services:
   back:
     container_name: ${APP_NAME}_backend
     build:
-      context: ./back
+      context: ./docker/php-fpm
       dockerfile: Dockerfile
     depends_on:
       - traefik
       - mysql
     networks:
+      - mmh_external
       - internal
     volumes:
       - ./back:/var/www
+      - ./docker/supervisor/supervidord.d:/etc/supervisord.d
     tty: true
 
   # frontend
@@ -89,11 +93,6 @@ services:
       dockerfile: Dockerfile
       args:
         - MYSQL_VERSION=${MYSQL_VERSION}
-    labels:
-      - traefik.enable=true
-      - traefik.port=3306
-      - traefik.docker.network=internal
-      - traefik.backend=mysql
     networks:
       - internal
     environment:
@@ -104,6 +103,31 @@ services:
       - TIMEZONE=${TIMEZONE}
     volumes:
       - mysql:/var/lib/mysql
+    tty: true
+
+  # banco de dados para queue e/ou cache
+  redis:
+    container_name: ${APP_NAME}_redis
+    image: redis:alpine
+    depends_on:
+      - back
+    networks:
+      - internal
+    tty: true
+
+  # service work para queue e/ou scheduler
+  supervisor:
+    container_name: ${APP_NAME}_supervisor
+    build:
+      context: ./docker/supervisor
+      dockerfile: Dockerfile
+    depends_on:
+      - back
+    volumes:
+      - ./back:/var/www
+      - ./docker/supervisor/supervidord.d:/etc/supervisord.d
+    networks:
+      - internal
     tty: true
 
 volumes:

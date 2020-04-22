@@ -7,7 +7,4 @@ if [[ ! -d ./vendor ]]; then
     php artisan key:generate --ansi
 fi
 
-php artisan migrate:fresh
-php artisan db:seed
-
 php-fpm

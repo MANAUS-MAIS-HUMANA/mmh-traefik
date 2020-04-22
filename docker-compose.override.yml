@@ -3,12 +3,19 @@ version: "3.4"
 services:
   #  proxy reverso
   traefik:
-    command: --api --docker --docker.domain=${DOMAIN} --docker.watch=true --docker.exposedbydefault=false
+    command:
+      - --api
+      - --docker
+      - --docker.domain=${DOMAIN}
+      - --docker.watch=true
+      - --docker.exposedbydefault=false
 
   # servidor web para o back
   nginx:
     build:
       target: development
+    volumes:
+      - ./logs/nginx:/var/log/nginx
 
   # backend
   back:
@@ -17,7 +24,7 @@ services:
       args:
         - USERNAME=${USERNAMEDOCKER}
     environment:
-        - FRONT_URL=${DOMAIN}
+      - FRONT_URL=front.${DOMAIN}
 
   # frontend
   front:
@@ -53,6 +60,11 @@ services:
     volumes:
       - sessions
     tty: true
+
+  # service work para queue e/ou scheduler
+  supervisor:
+    volumes:
+      - ./logs/supervisor:/tmp
 
 volumes:
   sessions:
