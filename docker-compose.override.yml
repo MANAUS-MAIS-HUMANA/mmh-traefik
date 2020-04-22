@@ -6,16 +6,9 @@ services:
     command:
       - --api
       - --docker
-      - --logLevel=ERROR
-      - --traefikLog.filePath=/logs/traefik.log
-      - --traefikLog.format=json
-      - --accessLog.filePath=/logs/access.log
-      - --accessLog.format=json
       - --docker.domain=${DOMAIN}
       - --docker.watch=true
       - --docker.exposedbydefault=false
-    volumes:
-      - ./logs/traefik:/logs
 
   # servidor web para o back
   nginx:
@@ -67,6 +60,10 @@ services:
     volumes:
       - sessions
     tty: true
+
+  supervisor:
+    volumes:
+      - ./logs/supervisor:/tmp
 
 volumes:
   sessions:

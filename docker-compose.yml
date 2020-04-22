@@ -17,9 +17,11 @@ services:
       - traefik.enable=true
       - traefik.port=8080
       - traefik.frontend.rule=Host:traefik.${DOMAIN}
+      - traefik.docker.network=mmh_external
       - traefik.frontend.auth.basic=${TRAEFIK_AUTH}
     networks:
       - mmh_external
+      - internal
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     tty: true
@@ -60,8 +62,16 @@ services:
     networks:
       - mmh_external
       - internal
+    environment:
+      - MAIL_DRIVER=${MAIL_DRIVER}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_ENCRYPTION=${MAIL_ENCRYPTION}
     volumes:
       - ./back:/var/www
+      - ./docker/supervisor/supervidord.d:/etc/supervisord.d
     tty: true
 
   # frontend
@@ -90,11 +100,6 @@ services:
       dockerfile: Dockerfile
       args:
         - MYSQL_VERSION=${MYSQL_VERSION}
-    labels:
-      - traefik.enable=true
-      - traefik.port=3306
-      - traefik.docker.network=internal
-      - traefik.backend=mysql
     networks:
       - internal
     environment:
@@ -105,6 +110,29 @@ services:
       - TIMEZONE=${TIMEZONE}
     volumes:
       - mysql:/var/lib/mysql
+    tty: true
+
+  redis:
+    container_name: ${APP_NAME}_redis
+    image: redis:alpine
+    depends_on:
+      - back
+    networks:
+      - internal
+    tty: true
+
+  supervisor:
+    container_name: ${APP_NAME}_supervisor
+    build:
+      context: ./docker/supervisor
+      dockerfile: Dockerfile
+    depends_on:
+      - back
+    volumes:
+      - ./back:/var/www
+      - ./docker/supervisor/supervidord.d:/etc/supervisord.d
+    networks:
+      - internal
     tty: true
 
 volumes:
