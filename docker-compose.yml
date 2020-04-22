@@ -112,6 +112,7 @@ services:
       - mysql:/var/lib/mysql
     tty: true
 
+  # banco de dados para queue e/ou cache
   redis:
     container_name: ${APP_NAME}_redis
     image: redis:alpine
@@ -121,6 +122,7 @@ services:
       - internal
     tty: true
 
+  # service work para queue e/ou scheduler
   supervisor:
     container_name: ${APP_NAME}_supervisor
     build:
