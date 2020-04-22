@@ -62,13 +62,6 @@ services:
     networks:
       - mmh_external
       - internal
-    environment:
-      - MAIL_DRIVER=${MAIL_DRIVER}
-      - MAIL_HOST=${MAIL_HOST}
-      - MAIL_PORT=${MAIL_PORT}
-      - MAIL_USERNAME=${MAIL_USERNAME}
-      - MAIL_PASSWORD=${MAIL_PASSWORD}
-      - MAIL_ENCRYPTION=${MAIL_ENCRYPTION}
     volumes:
       - ./back:/var/www
       - ./docker/supervisor/supervidord.d:/etc/supervisord.d
