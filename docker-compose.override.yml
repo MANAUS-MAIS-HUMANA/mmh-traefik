@@ -61,6 +61,7 @@ services:
       - sessions
     tty: true
 
+  # service work para queue e/ou scheduler
   supervisor:
     volumes:
       - ./logs/supervisor:/tmp
