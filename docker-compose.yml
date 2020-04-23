@@ -62,6 +62,8 @@ services:
     networks:
       - mmh_external
       - internal
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
     volumes:
       - ./back:/var/www
       - ./docker/supervisor/supervidord.d:/etc/supervisord.d
@@ -83,6 +85,8 @@ services:
     networks:
       - mmh_external
       - internal
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
     tty: true
 
   # banco de dados
