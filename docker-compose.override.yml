@@ -24,7 +24,7 @@ services:
       args:
         - USERNAME=${USERNAMEDOCKER}
     environment:
-      - FRONT_URL=front.${DOMAIN}
+      - FRONT_URL=http://front.${DOMAIN}
 
   # frontend
   front:
