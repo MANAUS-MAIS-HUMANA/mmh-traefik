@@ -3,7 +3,7 @@ FROM php:7.4.4-fpm-alpine3.11 AS development
 
 WORKDIR /var/www
 
-ARG USERNAME=codese
+ARG USERNAME=mmh
 
 RUN adduser -u 1000 -G root -s /bin/sh -D $USERNAME
 
@@ -14,10 +14,10 @@ RUN rm -rf /var/www/html \
 
 
 COPY entrypoint.sh /usr/local/bin/
+COPY php.ini /usr/local/etc/php/conf.d/php.override.ini
+COPY www.conf /usr/local/etc/php-fpm.d/www.conf
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
-
-COPY . .
 
 RUN chown -R $USERNAME:root /var/www \
     && chmod u+rwx,g+rx,o+rx /var/www \

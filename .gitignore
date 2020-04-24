@@ -6,3 +6,4 @@ acme.json
 back
 front
 docker/nginx/back/default.conf
+logs

@@ -1,0 +1,11 @@
+[program:laravel-scheduler]
+process_name=%(program_name)s_%(process_num)02d
+command=/bin/sh -c "while [ true ]; do (php artisan schedule:run --verbose --no-interaction &); sleep 60; done"
+directory=/var/www/
+autostart=true
+autorestart=true
+numprocs=1
+user=mmh
+redirect_stderr=true
+stdout_logfile=/tmp/laravel-scheduler-output.log
+stderr_logfile=/tmp/laravel-scheduler-error.log
