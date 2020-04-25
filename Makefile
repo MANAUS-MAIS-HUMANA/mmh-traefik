@@ -7,14 +7,14 @@ start-prod: front back prod network-external build-no-cache up-prod
 .PHONY: front
 front:
 	if [ ! -d "./front" ]; then \
-		git clone https://github.com/MANAUS-MAIS-HUMANA/mmh-web.git front; \
+		git clone git@github.com:MANAUS-MAIS-HUMANA/mmh-web.git front; \
 		cp ./docker/node/Dockerfile ./front/; \
 	fi
 
 .PHONY: back
 back:
 	if [ ! -d "./back" ]; then \
-		git clone https://github.com/MANAUS-MAIS-HUMANA/mmh-service.git back; \
+		git clone git@github.com:MANAUS-MAIS-HUMANA/mmh-service.git back; \
 		chmod -R 755 ./back/storage ./back/bootstrap/cache/; \
 	fi
 
