@@ -12,8 +12,6 @@ RUN npm install react-scripts@3.3.1 -g --silent
 
 COPY . .
 
-USER $USERNAME
-
 
 # Build do projeto
 FROM development AS build
