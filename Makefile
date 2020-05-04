@@ -63,6 +63,14 @@ db-migrate:
 db-migrate-make:
 	@docker-compose exec --user=${USERNAMEDOCKER} back ./artisan make:migration ${ARGS}
 
+.PHONY: db-migrate-refresh
+db-migrate-refresh:
+	@docker-compose exec --user=${USERNAMEDOCKER} back ./artisan migrate:refresh
+
+.PHONY: db-migrate-refresh-seed
+db-migrate-refresh-seed:
+	@docker-compose exec --user=${USERNAMEDOCKER} back ./artisan migrate:refresh --seed
+
 .PHONY: db-rollback
 db-rollback:
 	@docker-compose exec --user=${USERNAMEDOCKER} back ./artisan migrate:rollback
