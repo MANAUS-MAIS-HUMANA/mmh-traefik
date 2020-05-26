@@ -5,7 +5,9 @@ WORKDIR /var/www
 
 ARG USERNAME=mmh
 
-RUN adduser -u 1000 -G root -s /bin/sh -D $USERNAME
+ARG UID=1000
+
+RUN adduser -u $UID -G root -s /bin/sh -D $USERNAME
 
 RUN rm -rf /var/www/html \
     && apk add --no-cache openssl bash nano mysql-client \
