@@ -21,6 +21,7 @@ back:
 .PHONY: dev
 dev:
 	cp .env-dev .env;
+	cp ./front/.env.local ./front/.env;
 	cp ./docker/nginx/back/default-dev.conf ./docker/nginx/back/default.conf;
 	rm -f acme.json;
 
