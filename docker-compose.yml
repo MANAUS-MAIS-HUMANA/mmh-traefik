@@ -91,6 +91,7 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - APP_PORT=${APP_PORT}
       - DOMAIN=${DOMAIN}
+      - BACKEND_URL=${BACKEND_URL}
     tty: true
 
   # banco de dados
