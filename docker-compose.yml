@@ -12,7 +12,7 @@ services:
     container_name: ${APP_NAME}_traefik
     image: traefik:${TRAEFIK_VERSION}
     ports:
-      - 80:80
+      - ${APP_PORT}:80
     labels:
       - traefik.enable=true
       - traefik.port=8080
@@ -56,6 +56,8 @@ services:
     build:
       context: ./docker/php-fpm
       dockerfile: Dockerfile
+      args:
+        - UID=${UID}
     depends_on:
       - traefik
       - mysql
@@ -66,7 +68,7 @@ services:
       - JWT_SECRET=${JWT_SECRET}
     volumes:
       - ./back:/var/www
-      - ./docker/supervisor/supervidord.d:/etc/supervisord.d
+      - ./docker/supervisor/supervisord.d:/etc/supervisord.d
     tty: true
 
   # frontend
@@ -87,6 +89,9 @@ services:
       - internal
     environment:
       - JWT_SECRET=${JWT_SECRET}
+      - APP_PORT=${APP_PORT}
+      - DOMAIN=${DOMAIN}
+      - BACKEND_URL=${BACKEND_URL}
     tty: true
 
   # banco de dados
@@ -129,7 +134,7 @@ services:
       - back
     volumes:
       - ./back:/var/www
-      - ./docker/supervisor/supervidord.d:/etc/supervisord.d
+      - ./docker/supervisor/supervisord.d:/etc/supervisord.d
     networks:
       - internal
     tty: true

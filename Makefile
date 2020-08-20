@@ -7,20 +7,21 @@ start-prod: front back prod network-external build-no-cache up-prod
 .PHONY: front
 front:
 	if [ ! -d "./front" ]; then \
-		git clone https://github.com/MANAUS-MAIS-HUMANA/mmh-web.git front; \
+		git clone git@github.com:MANAUS-MAIS-HUMANA/mmh-web.git front; \
 		cp ./docker/node/Dockerfile ./front/; \
 	fi
 
 .PHONY: back
 back:
 	if [ ! -d "./back" ]; then \
-		git clone https://github.com/MANAUS-MAIS-HUMANA/mmh-service.git back; \
+		git clone git@github.com:MANAUS-MAIS-HUMANA/mmh-service.git back; \
 		chmod -R 755 ./back/storage ./back/bootstrap/cache/; \
 	fi
 
 .PHONY: dev
 dev:
 	cp .env-dev .env;
+	cp ./front/.env.local ./front/.env;
 	cp ./docker/nginx/back/default-dev.conf ./docker/nginx/back/default.conf;
 	rm -f acme.json;
 
@@ -62,6 +63,14 @@ db-migrate:
 .PHONY: db-migrate-make
 db-migrate-make:
 	@docker-compose exec --user=${USERNAMEDOCKER} back ./artisan make:migration ${ARGS}
+
+.PHONY: db-migrate-refresh
+db-migrate-refresh:
+	@docker-compose exec --user=${USERNAMEDOCKER} back ./artisan migrate:refresh
+
+.PHONY: db-migrate-refresh-seed
+db-migrate-refresh-seed:
+	@docker-compose exec --user=${USERNAMEDOCKER} back ./artisan migrate:refresh --seed
 
 .PHONY: db-rollback
 db-rollback:
