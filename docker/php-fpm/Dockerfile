@@ -10,8 +10,9 @@ ARG UID=1000
 RUN adduser -u $UID -G root -s /bin/sh -D $USERNAME
 
 RUN rm -rf /var/www/html \
-    && apk add --no-cache openssl bash nano mysql-client \
-    && docker-php-ext-install pdo pdo_mysql bcmath \
+    && apk update \
+    && apk add --no-cache openssl bash nano mysql-client libzip-dev \
+    && docker-php-ext-install pdo pdo_mysql bcmath zip \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 
